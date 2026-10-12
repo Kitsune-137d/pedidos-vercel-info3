@@ -102,8 +102,22 @@ return errores;
 // Devuelve un objeto con TODOS los estados como llave, aunque tengan 0:
 //   { registrado: 3, en_preparacion: 3, listo: 2, entregado: 2 }
 // Con una lista vacía, todos van en 0.
-export function resumenPorEstado(pedidos) {
-  return {} // TODO
+export function resumenPorEstado(pedidos)
+{
+let resumen = {};
+for (let i=0; i < ESTADOS.length; i++) {
+  resumen[ESTADOS[i]] = 0;
+}
+if (!pedidos || pedidos.length === 0) { 
+  return resumen;
+}
+for (let i=0; i < pedidos.length; i++) {
+  let pedido = pedidos[i];
+  if (resumen[pedido.estado] !== undefined) {
+    resumen[pedido.estado]++;
+  }
+}
+return resumen;
 }
 
 // ----------------------------------------------------------------------------
