@@ -42,7 +42,6 @@ let total = subtotal * (1 - descuento);
 return Math.round(total * 100) / 100;
 
 
-  return 0 // TODO
 }
 
 // ----------------------------------------------------------------------------
@@ -55,7 +54,14 @@ return Math.round(total * 100) / 100;
 // Un estado que no existe también es false.
 // Pista: ESTADOS ya es un arreglo ordenado. ¿Qué te dice indexOf?
 export function puedeTransicionar(actual, nuevo) {
-  return true // TODO: hoy acepta cualquier cosa. ¿Qué tan grave sería eso en producción?
+let indexActual = ESTADOS.indexOf(actual);
+let indexNuevo = ESTADOS.indexOf(nuevo);
+
+if (indexActual === -1 || indexNuevo === -1) {
+  return false; 
+}
+return indexNuevo === indexActual + 1;
+
 }
 
 // ----------------------------------------------------------------------------
