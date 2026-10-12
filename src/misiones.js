@@ -76,7 +76,24 @@ return indexNuevo === indexActual + 1;
 //                         correo: algo@algo.algo   (el email es opcional)
 // Pista: '55 1234-5678'.replace(/[\s-]/g, '')   y   /^\d{10}$/.test(...)
 export function validarCliente(cliente) {
-  return [] // TODO
+  let errores = [];
+  if (!cliente.nombre || cliente.nombre.trim() === '') {
+    errores.push('nombre_requerido');
+  }
+let telefonoLimpio = cliente.telefono ? cliente.telefono.replace(/[\s-]/g, '') : '';
+let regexTelefono = /^\d{10}$/;
+if (!regexTelefono.test(telefonoLimpio)) {
+  errores.push('telefono_invalido');
+}
+if (cliente.email && cliente.email.trim() !== '') {
+  let regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!regexEmail.test(cliente.email)) {
+    errores.push('email_invalido');
+  }
+}
+
+return errores;
+
 }
 
 // ----------------------------------------------------------------------------
