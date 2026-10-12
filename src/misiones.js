@@ -128,9 +128,57 @@ return resumen;
 // "José Martínez". Un texto vacío (o solo espacios) devuelve todos.
 // Pista: 'Ramírez'.normalize('NFD').replace(/[̀-ͯ]/g, '')
 //        Investiga qué hace NFD. Es un problema real en sistemas en español.
+
 export function buscarPedidos(pedidos, texto) {
-  return [] // TODO
+    if (!pedidos || pedidos.length === 0) {
+        return [];
+    }
+
+    if (!texto || texto.trim() === "") {
+        return pedidos;
+    }
+
+    function normalizar(str) {
+        return str
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .toLowerCase();
+    }
+
+    let textoNormalizado = normalizar(texto);
+    let resultados = [];
+
+
+
+    for (let i = 0; i < pedidos.length; i++) {
+        let pedido = pedidos[i];
+        
+        let nombreCliente = "";
+        if (pedido.cliente) {
+            if (typeof pedido.cliente === 'object' && pedido.cliente.nombre) {
+                nombreCliente = pedido.cliente.nombre;
+            } else if (typeof pedido.cliente === 'string') {
+                nombreCliente = pedido.cliente;
+            }
+        }
+
+        let nombreNormalizado = normalizar(nombreCliente);
+        
+        if (nombreNormalizado.includes(textoNormalizado)) {
+            resultados.push(pedido);
+        }
+    }
+
+
+    return resultados;
 }
+
+
+
+
+
+
+
 
 // ----------------------------------------------------------------------------
 // MISIÓN 6 · DESTACADO — Los mejores clientes
