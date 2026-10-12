@@ -189,5 +189,44 @@ export function buscarPedidos(pedidos, texto) {
 // Orden: total de mayor a menor; si empatan, por nombre alfabético.
 // Pista: un objeto acumulador, luego Object.entries, map y sort.
 export function topClientes(pedidos, n) {
-  return [] // TODO
+
+
+
+  if (!pedidos || pedidos.length === 0 || !n || n <= 0) {
+        return [];
+    }
+    let acumulador = {};
+    for (let i = 0; i < pedidos.length; i++) {
+        let pedido = pedidos[i];
+        
+        let nombreCliente = "";
+        if (pedido.cliente) {
+            if (typeof pedido.cliente === 'object' && pedido.cliente.nombre) {
+                nombreCliente = pedido.cliente.nombre;
+            } else if (typeof pedido.cliente === 'string') {
+                nombreCliente = pedido.cliente;
+            }
+        }
+        if (nombreCliente !== "") {
+            let costoPedido = totalPedido(pedido);
+            
+            if (!acumulador[nombreCliente]) {
+                acumulador[nombreCliente] = 0;
+            }
+            acumulador[nombreCliente] += costoPedido;
+        }
+    }
+    let listaClientes = Object.entries(acumulador).map(([cliente, total]) => {
+        return {
+            cliente: cliente,
+            total: Math.round(total * 100) / 100
+        };
+    });
+    listaClientes.sort((a, b) => {
+        if (b.total !== a.total) {
+            return b.total - a.total; 
+        }
+        return a.cliente.localeCompare(b.cliente); 
+    });
+    return listaClientes.slice(0, n);
 }
