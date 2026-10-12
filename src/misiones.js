@@ -25,7 +25,23 @@ import { ESTADOS } from './datos.js'
 //   - Un pedido sin items cuesta 0.
 // Pista: prueba en la consola 0.1 + 0.2 y verás por qué hay que redondear.
 //        Math.round(x * 100) / 100
+
 export function totalPedido(pedido) {
+
+if (!pedido.items || pedido.items.length === 0) {
+  return 0;
+}
+
+  let subtotal = 0;
+for (let i=0; i < pedido.items.length; i++) {
+  let item = pedido.items[i];
+  subtotal += item.cantidad * item.precioUnitario;
+}
+let descuento = pedido.descuento || 0;
+let total = subtotal * (1 - descuento);
+return Math.round(total * 100) / 100;
+
+
   return 0 // TODO
 }
 
